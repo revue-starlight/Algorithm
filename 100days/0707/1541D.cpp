@@ -1,14 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-const int N = 3e2+100;
+const int N = 400;
 const int mod = 1e9+7;
 struct Edge{
     int u,v,next;
-}e[N];
+}e[N<<2];
 int head[N],tot;
 int n;
-int f[N][20],dep[N],son[N];
+int f[N][21],dep[N],son[N];
 int dp[N][N];
 void add(int u,int v){e[++tot]={u,v,head[u]}; head[u]=tot;}
 
@@ -30,8 +30,10 @@ void makelca(int u,int fa,int depth){
         f[u][i]=f[f[u][i-1]][i-1];
     }
     for (int i=head[u];i;i=e[i].next){
-        if (fa!=e[i].v) makelca(i,u,depth+1);
-        son[u]+=son[e[i].v];
+        if (fa!=e[i].v) {
+            makelca(e[i].v,u,depth+1);
+            son[u]+=son[e[i].v];
+        }
     }
     
 }
@@ -40,14 +42,17 @@ void makelca(int u,int fa,int depth){
 int work(int u,int v){
     int ret = 0;
     int lca = -1;
+    int uu=u,vv=v;
     {// getlca
+        bool flag =1;
         if (dep[u]<dep[v]) swap(u,v);
+        int tmpu = u;
         for (int i=20;i>=0;i--){
             if (dep[f[u][i]]>=dep[v]){
                 u=f[u][i];
             }
         }
-        if (u==v) lca = u;
+        if (u==v) {lca = u;}
         else {
             int tmpu,tmpv;
             tmpu=u;tmpv=v;
@@ -57,13 +62,14 @@ int work(int u,int v){
             lca = f[tmpu][0];
         }
     }
+    u=uu,v=vv;
     int ans = 0;
     int tmpu = u,tmpv = v;
     int dis = dep[u]+dep[v]-2*dep[lca];
     int cnt = 0;
     int pre = 0;
     while (tmpu!=lca){
-        ans += dp[cnt][dis-cnt] * (son[tmpu]-son[pre]);
+        ans = ans + (dp[cnt][dis-cnt] * (son[tmpu]-son[pre])) % mod;
         ans %= mod;
         pre = tmpu;
         tmpu = f[tmpu][0];
@@ -72,22 +78,32 @@ int work(int u,int v){
     cnt = 0;
     int prev = 0;
     while (tmpv!=lca){
-        ans += dp[dis-cnt][cnt]*(son[tmpv]-son[prev]);
+        ans = ans + (dp[dis-cnt][cnt]*(son[tmpv]-son[prev])) % mod;
         ans %= mod;
         prev = tmpv;
         tmpv = f[tmpv][0];
         cnt++;
     }
     
-    ans += dp[dep[lca]-dep[u]][dep[lca]-dep[v]]*(son[lca]-son[prev]-son[pre]+(son[f[lca][0]]-son[lca]));
+    ans = ans + (dp[dep[u]-dep[lca]][dep[v]-dep[lca]]*(son[lca]-son[prev]-son[pre]+(n-son[lca]))) % mod;
     ans %= mod;
+    ans = (ans * ksm(n,mod-2)) % mod;
     return ans;
 }   
 
 int m;
-int main(){
-    cin>>n>>m;
-    for (int i=1;i<=m;i++){
+signed main(){
+    freopen("a.in","r",stdin);
+    for (int i=0;i<N;i++)
+        for (int j=0;j<N;j++){
+            if (i==0) dp[i][j]=0;
+            else if (j==0) dp[i][j]=1;
+            else
+                dp[i][j]=(dp[i-1][j]+dp[i][j-1])%mod*ksm(2,mod-2)%mod;
+    }
+
+    cin>>n;
+    for (int i=1;i<n;i++){
         int x,y;
         cin>>x>>y;
         add(x,y); add(y,x);
@@ -102,6 +118,6 @@ int main(){
             }
         }
     }
-    ret *= ksm(n,mod-2);
+    cout<<ret<<endl;
     return 0;
 }
