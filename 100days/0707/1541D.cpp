@@ -61,8 +61,8 @@ int work(int u,int v){
             }
             lca = f[tmpu][0];
         }
+        u=uu,v=vv;
     }
-    u=uu,v=vv;
     int ans = 0;
     int tmpu = u,tmpv = v;
     int dis = dep[u]+dep[v]-2*dep[lca];
