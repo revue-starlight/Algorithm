@@ -37,14 +37,17 @@ int work(int a,int b){
 }
 void solve(){
     cin>>n>>k;
-    int x = 0;
-    for (int i=0;i<n;i++){
-        int p = i;
-        cout<<x<<endl;
-        int ans;
-        cin>>ans;
-        if (ans == 1) return;
-        x = work(inv(p),(p+1));
+    cout<<0<<endl;
+    int ret; cin>>ret; if (ret==1) return;
+    for (int x=1;x<n;x++){
+        if (x%2==0){
+            cout<<work(x,inv(x-1))<<endl;
+        } else {
+            cout<<work(inv(x),x-1)<<endl;
+        }
+        int ret;
+        cin>>ret;
+        if (ret==1) break;
     }
 }
 
