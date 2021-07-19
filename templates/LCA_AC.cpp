@@ -1,4 +1,4 @@
-``` c++    
+
     {// getlca
         bool flag =1;
         if (dep[u]<dep[v]) swap(u,v);
@@ -19,4 +19,3 @@
         }
         u=uu,v=vv;
     }
-```
