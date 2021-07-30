@@ -11,7 +11,7 @@ void build(int x,int l,int r){
     }
     int mid = (l+r)>>1;
     build(x<<1,l,mid);
-    build(x<<1|1,mid+1,r);
+    build(x<<1|1,mid+1,r
     tree[x]=__gcd(tree[x<<1],tree[x<<1|1]);
 }
 
