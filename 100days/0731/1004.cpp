@@ -142,6 +142,8 @@ void findfac(long long n)
 int main()
 {
     //srand(time(NULL));//需要time.h头文件//POJ上G++不能加这句话
+    // freopen("data.in","r",stdin);
+    //  freopen("data2.out","w",stdout);
     long long T;
     scanf("%lld",&T);
     long long n,m;
@@ -160,6 +162,7 @@ int main()
         }
         tol=0;
         findfac(n);
+        sort(factor,factor+tol);
         //for(int i=0;i<tol;i++)printf("%lld ",factor[i]);
         if(Miller_Rabin(n))printf("%lld %lld\n",n,n);
         else printf("%lld %lld\n",factor[0],n);
