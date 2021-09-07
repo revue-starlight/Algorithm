@@ -2,8 +2,8 @@
 using namespace std;
 int main(){
     int i;
-    cout<<"g++ H.cpp\n";
-    system("g++ H.cpp -o test");
+    cout<<"g++ test.cpp\n";
+    system("g++ test.cpp -o test");
 
     cout<<"g++ data.cpp\n";
     system("g++ data.cpp -o data");
@@ -11,9 +11,9 @@ int main(){
     system("g++ std.cpp -o std");
   for (i=1;;i++){
         printf("The result of No. %d Case is:  ",i);
-        system("./data");
-        system("./std");
-        system("./test");
+        system("./data >data.in");
+        system("./std <data.in >std.out");
+        system("./test <data.in >test.out" );
         if (system("diff std.out test.out  --ignore-trailing-space")){
             printf("Wrong Answer\n");
             return 0;
