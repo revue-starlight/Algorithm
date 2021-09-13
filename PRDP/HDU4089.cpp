@@ -1,37 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int N = 2005,M = 2005;
-int m,n,k;
-double p1,p2,p3,p4;
-double dp[N][M];
-int main(){
-    while (cin>>n){
-        memset(dp,0,sizeof(dp));
-        cin>>m>>k>>p1>>p2>>p3>>p4;
-        for (int i=1;i<=n;i++){
-            double A = p2*(1-p1), B = dp[i-1][i-1]*p3+p4;
-            for (int j=i-1;j>=1;j--){
-                if (j<=k)
-                    B = B + (dp[i-1][j-1]*p3+p4)*A;
-                else 
-                    B = B + (dp[i-1][j-1]*p3)*A;
-                A = A * p2*(1-p1);
-            }
-
-            B += p4*(1-p1)*A;
-            A *= p2*(1-p1);
-            dp[i][i]=B/(1-A);
-            for (int j=1;j<=i;j++){
-                if (j==1){
-                    dp[i][j]=(p2*dp[i][i]+p4)/(1-p1);
-                } else {
-                    if (j<=k)
-                    dp[i][j]=(p2*dp[i][j-1]+p3*dp[i-1][j-1]+p4)/(1-p1);
-                    else 
-                    dp[i][j]=(p2*dp[i][j-1]+p3*dp[i-1][j-1])/(1-p1);
-                }
-            }
+int T;
+const int N = 2e3+100;
+double f[N][N];
+double c[N];
+void solve(){
+    int n,m,k;
+    double p1,p2,p3,p4;
+    while (cin>>n>>m>>k){
+        cin>>p1>>p2>>p3>>p4;
+        //if(p4<=0.000001){printf("0.00000\n");continue;}
+    double p21 = p2/(1-p1);
+    double p31 = p3/(1-p1);
+    double p41 = p4/(1-p1);
+    for (int i=1;i<=n;i++){
+        for (int j=1;j<=i;j++){
+            if (j>k) c[j]=f[i-1][j-1]*p31;
+            else c[j]=f[i-1][j-1]*p31+p41;
         }
-        cout<<dp[n][m]<<endl;
+        f[i][i]=0;
+        double p = 1;
+        for (int k=i;k>=1;k--){
+            f[i][i]+=p*c[k];
+            p*=p21;
+        }
+        f[i][i]/=(1-p);
+        f[i][1]=p21*f[i][i]+p41;
+        for (int j=2;j<i;j++){
+            f[i][j]=f[i][j-1]*p21+c[j];
+        }
     }
+    cout<<fixed<<setprecision(5)<<f[n][m]<<"\n";
+    }
+}
+int main(){
+    { solve(); }
 }
