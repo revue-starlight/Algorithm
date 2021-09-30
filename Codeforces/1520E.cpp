@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+ #include <bits/stdc++.h>
 using namespace std;
 int T;
 int n;
@@ -12,4 +12,4 @@ int main(){
         }
         int l = 0;
     }
-}
+} 
