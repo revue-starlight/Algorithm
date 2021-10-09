@@ -6,11 +6,11 @@ const int mod = 1e9+7;
 struct Edge{
     int u,v,next;
 }e[N<<2];
+void add(int u,int v){e[++tot]={u,v,head[u]}; head[u]=tot;}
 int head[N],tot;
 int n;
 int f[N][21],dep[N],son[N];
 int dp[N][N];
-void add(int u,int v){e[++tot]={u,v,head[u]}; head[u]=tot;}
 
 int ksm(int a,int n){
     int ret = 1;
